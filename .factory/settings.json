@@ -1,0 +1,36 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$FACTORY_PROJECT_DIR/.factory/hooks/load-mission-state.sh\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "validator|orchestrator|writer|researcher|programmer",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c '\"$FACTORY_PROJECT_DIR/.factory/hooks/save-mission-state.sh\" && \"$FACTORY_PROJECT_DIR/.factory/hooks/notify-milestone.sh\"'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$FACTORY_PROJECT_DIR/.factory/hooks/format-output.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}
