@@ -15,7 +15,10 @@ tools: ["Task", "Read", "Write", "Grep", "WebSearch", "TodoWrite"]
 4. **进度更新**：将拆解后的 Milestones 写入 `mission-state.json`，并使用 `TodoWrite` 实时显示进度。
 5. **任务分发**：使用 Task 工具将具体任务分派给对应的 Subagent（writer / researcher / programmer / worker）。
 6. **质量校验**：每个 Milestone 完成后，强制调用 `validator` 子代理进行校验。如果校验结果为 `FAIL`，必须基于反馈重新调度专家修复，严禁跳过。
-7. **闭环恢复**：如果 Validator 报出 `FAIL`，将反馈中的「具体问题」转化为新的 Feature 任务，并标记当前 Milestone 为「修复中」。
+7. **熔断与去重**：
+    -   **重试控制**：每次进入修复逻辑前，读取 JSON 中的 `retry_count`。若 `retry_count >= max_retries`，**禁止继续自动执行**，必须向用户发送详细的错误报告说明为何卡住，并请求人工干预。
+    -   **计数累加**：开始修复时，将 `retry_count` 加 1。
+    -   **任务去重**：将 Validator 的建议转化为 Features 时，检查该任务是否已在 `features` 列表中，避免添加重复任务。
 
 **场景判断逻辑**：
 - 写作：写、文章、报告、文档、文案、博客、教程

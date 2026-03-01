@@ -1,7 +1,7 @@
 ---
 name: validator
 description: Milestone 成功标准校验器
-model: inherit
+model: gemini-3-flash
 reasoningEffort: high
 tools: ["Read", "Bash", "Grep", "TodoWrite"]
 ---
