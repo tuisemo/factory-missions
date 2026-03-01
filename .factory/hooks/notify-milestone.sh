@@ -35,7 +35,7 @@ notify() {
 
 # 读取Mission状态以获取当前进度
 if [ -n "$FACTORY_PROJECT_DIR" ]; then
-    PROJECT_DIR="$FACTORY_PROJECT_DIR"
+    PROJECT_DIR="${FACTORY_PROJECT_DIR//\\//}"
 else
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     PROJECT_DIR="$(dirname "$SCRIPT_DIR")"

@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c '\"$FACTORY_PROJECT_DIR/.factory/hooks/save-mission-state.sh\" && \"$FACTORY_PROJECT_DIR/.factory/hooks/notify-milestone.sh\"'"
+            "command": "bash -c 'bash \"$FACTORY_PROJECT_DIR/.factory/hooks/save-mission-state.sh\" && bash \"$FACTORY_PROJECT_DIR/.factory/hooks/notify-milestone.sh\"'"
           }
         ]
       }

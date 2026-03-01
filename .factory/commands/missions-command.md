@@ -17,6 +17,7 @@ argument-hint: <任务描述>
     - 在 JSON 中设置：
         - `mission_goal`: "$ARGUMENTS"
         - `status`: "in-progress"
+        - `scene`: "programming"
         - `created_at`: 当前 ISO 时间戳
         - `current_milestone`: 0
     - 如果模板中有 `milestones` 结构，请保留为空数组 `[]`，等待 Orchestrator 随后填充。

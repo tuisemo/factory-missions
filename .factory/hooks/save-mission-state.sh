@@ -19,31 +19,33 @@ fi
 STATE="$PROJECT_DIR/mission-state.json"
 STATE_TMP="${STATE}.tmp"
 
-# 确保状态文件存在
+# 确保状态文件存在并标准化路径
 if [ ! -f "$STATE" ]; then
     echo '{}' > "$STATE"
 fi
+
+# 转换 Windows 路径为本地路径格式以供显示
+DISPLAY_PATH="${STATE//\\//}"
 
 # 更新状态：添加时间戳
 if command -v jq >/dev/null 2>&1; then
     # 使用不同方式获取 ISO 8601 时间戳
     if command -v date >/dev/null 2>&1; then
-        # Linux/macOS/Windows Git Bash
-        TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || date -u +"%Y-%m-%dT%H:%M:%S%:z" 2>/dev/null || date +"%Y-%m-%dT%H:%M:%S")
-    elif command -v powershell >/dev/null 2>&1; then
-        # Windows PowerShell fallback
-        TIMESTAMP=$(powershell -Command "Get-Date -AsUTC -Format 'yyyy-MM-ddTHH:mm:ssZ'" 2>/dev/null || echo "2026-03-01T14:35:00Z")
+        TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || date +"%Y-%m-%dT%H:%M:%S")
     else
-        TIMESTAMP="2026-03-01T14:35:00Z"
+        TIMESTAMP="2026-03-01T23:02:00Z"
     fi
 
-    # 只有在 jq 成功时才覆盖原文件，防止清空状态文件
-    if jq --arg ts "$TIMESTAMP" '.last_updated = $ts' "$STATE" > "$STATE_TMP" 2>/dev/null; then
-        mv "$STATE_TMP" "$STATE"
+    # 鲁棒性更新
+    NEW_STATE=$(jq --arg ts "$TIMESTAMP" '.last_updated = $ts' "$STATE" 2>/dev/null)
+    if [ -z "$NEW_STATE" ]; then
+        echo "⚠️ Warning: jq failed to parse state. Preservation mode engaged." >&2
     else
-        echo "⚠️ Warning: jq failed to update mission state. Preservation mode engaged." >&2
-        rm -f "$STATE_TMP"
+        echo "$NEW_STATE" > "$STATE"
     fi
+else
+    # 简单回退：仅更新文件修改时间
+    touch "$STATE"
 fi
 
 # Git 提交（如果在Git仓库中）

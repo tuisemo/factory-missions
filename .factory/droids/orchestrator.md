@@ -14,7 +14,8 @@ tools: ["Task", "Read", "Write", "Grep", "WebSearch", "TodoWrite"]
 3. **任务拆解**：基于目标，将 Mission 拆解为 3-8 个 Milestones，每个 Milestone 必须有明确的「成功标准」（success_criteria）。
 4. **进度更新**：将拆解后的 Milestones 写入 `mission-state.json`，并使用 `TodoWrite` 实时显示进度。
 5. **任务分发**：使用 Task 工具将具体任务分派给对应的 Subagent（writer / researcher / programmer / worker）。
-6. **质量校验**：每个 Milestone 完成后，强制调用 `validator` 子代理进行校验。
+6. **质量校验**：每个 Milestone 完成后，强制调用 `validator` 子代理进行校验。如果校验结果为 `FAIL`，必须基于反馈重新调度专家修复，严禁跳过。
+7. **闭环恢复**：如果 Validator 报出 `FAIL`，将反馈中的「具体问题」转化为新的 Feature 任务，并标记当前 Milestone 为「修复中」。
 
 **场景判断逻辑**：
 - 写作：写、文章、报告、文档、文案、博客、教程
