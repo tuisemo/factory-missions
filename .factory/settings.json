@@ -6,6 +6,21 @@
           {
             "type": "command",
             "command": "bash \"$FACTORY_PROJECT_DIR/.factory/hooks/load-mission-state.sh\""
+          },
+          {
+            "type": "command",
+            "command": "echo '{\"level\": \"INFO\", \"source\": \"mission\", \"message\": \"Mission 会话已启动\"}' | bash \"$FACTORY_PROJECT_DIR/.factory/hooks/log-mission-event.sh\""
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "orchestrator|worker|programmer|writer|researcher|validator",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"level\": \"INFO\", \"source\": \"$DROID\", \"message\": \"Subagent $DROID 已启动\"}' | bash \"$FACTORY_PROJECT_DIR/.factory/hooks/log-mission-event.sh\""
           }
         ]
       }
@@ -17,6 +32,10 @@
           {
             "type": "command",
             "command": "bash -c 'bash \"$FACTORY_PROJECT_DIR/.factory/hooks/save-mission-state.sh\" && bash \"$FACTORY_PROJECT_DIR/.factory/hooks/notify-milestone.sh\"'"
+          },
+          {
+            "type": "command",
+            "command": "echo '{\"level\": \"INFO\", \"source\": \"$DROID\", \"message\": \"Subagent $DROID 已停止\"}' | bash \"$FACTORY_PROJECT_DIR/.factory/hooks/log-mission-event.sh\""
           }
         ]
       }
@@ -28,6 +47,10 @@
           {
             "type": "command",
             "command": "bash \"$FACTORY_PROJECT_DIR/.factory/hooks/format-output.sh\""
+          },
+          {
+            "type": "command",
+            "command": "echo '{\"level\": \"DEBUG\", \"source\": \"file_operation\", \"message\": \"文件已编辑/创建\", \"extra_info\": \"$TOOL_INPUT_FILE_PATH\"}' | bash \"$FACTORY_PROJECT_DIR/.factory/hooks/log-mission-event.sh\""
           }
         ]
       }

@@ -323,3 +323,129 @@ Milestones：
 4. **文档完整**：所有修改都有清晰说明
 5. **质量优先**：不牺牲质量追求速度
 6. **状态一致**：保持 mission-state.json 准确
+
+---
+
+## 日志规范
+
+### 日志级别
+- **INFO**: 正常执行信息，任务开始/完成、状态变更、重大决策
+- **WARN**: 警告信息，质量问题（测试覆盖率低）、潜在问题、非致命错误
+- **ERROR**: 错误信息，执行失败、验证失败、致命错误
+- **DEBUG**: 调试信息，详细操作、文件编辑、内部状态
+
+### 日志记录方式
+在 Orchestrator 和 Workers 中使用日志脚本：
+
+```python
+# INFO 级别
+Execute(
+    command='bash "$FACTORY_PROJECT_DIR/.factory/scripts/log-event.sh" "INFO" "orchestrator" "开始执行 Milestone 1"',
+    riskLevel="low"
+)
+
+# WARN 级别
+Execute(
+    command='bash "$FACTORY_PROJECT_DIR/.factory/scripts/log-event.sh" "WARN" "validator" "测试覆盖率不足" "当前: 82%, 目标: 85%"',
+    riskLevel="low"
+)
+
+# ERROR 级别
+Execute(
+    command='bash "$FACTORY_PROJECT_DIR/.factory/scripts/log-event.sh" "ERROR" "programmer" "测试失败" "3 个测试用例失败"',
+    riskLevel="low"
+)
+```
+
+### 日志最佳实践
+- 只记录关键事件，避免过度记录
+- 消息要简洁明确，使用 extra_info 提供额外上下文
+- 包含足够的信息用于调试
+- 日志记录要快速，避免阻塞执行
+
+详细文档：`.factory/docs/LOGGING.md`
+
+---
+
+## 交互式规划
+
+### 规划阶段命令
+- `/plan` - 重新生成规划
+- `/show-plan` - 显示当前规划
+- `/edit-plan [指令]` - 编辑规划
+- `/add-milestone [名称]` - 添加 Milestone
+- `/add-feature [名称]` - 添加 Feature
+- `/approve` - 批准规划并开始执行
+
+### 规划流程
+1. Orchestrator 分析任务目标
+2. 提出澄清问题（3-5个）
+3. 生成初步规划
+4. 展示规划并等待用户确认
+5. 用户可使用 /edit-plan 修改
+6. 使用 /approve 批准后开始执行
+
+---
+
+## 中断恢复
+
+### 恢复命令
+- `/pause` - 暂停当前执行
+- `/resume` - 从暂停点恢复
+- `/redirect [指令]` - 重定向到新方向
+- `/status` - 查看当前状态
+- `/logs` - 查看执行日志
+
+### 暂停机制
+- 自动保存当前 checkpoint
+- 记录正在执行的任务
+- 支持精确恢复到中断点
+
+### 重定向支持
+- 功能调整（添加/删除/修改功能）
+- 方向改变（架构调整）
+- 优先级调整（重新排序）
+- Milestone 调整（合并/拆分）
+
+---
+
+## 动态技能生成
+
+### 触发条件
+- 现有 Skills 无法满足任务需求
+- 任务需要高度专业化知识
+- 多次尝试使用通用 Worker 失败
+- 用户明确要求创建新技能
+
+### 生成流程
+1. 识别技能缺口
+2. 使用 `dynamic-skill-generator` 生成技能定义
+3. 创建 `.factory/skills/custom/[skill-name].md`
+4. 更新 mission-state.json.skills_used
+5. 重新执行任务，使用新技能
+
+### 技能注册
+- 自动添加到 mission-state.json
+- 可立即使用
+- 支持跨 Mission 复用
+
+---
+
+## 并行执行
+
+### 并行模式
+- `auto` - 自动分析依赖关系，最大化并行
+- `parallel` - 尽可能并行执行
+- `sequential` - 串行执行
+
+### 依赖管理
+- 每个 Feature 可声明 dependencies
+- 使用拓扑排序确定执行顺序
+- 等待所有依赖完成后才执行
+
+### 资源限制
+- `max_parallel_workers` 控制并发数
+- 默认 3 个并发 Worker
+- 可根据系统资源调整
+
+详细文档：`.factory/docs/PARALLEL_EXECUTION.md`
