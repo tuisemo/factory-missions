@@ -10,7 +10,7 @@ description: 查看当前 Mission 的详细执行状态与里程碑
 
 1. 读取 `$FACTORY_PROJECT_DIR/.factory/mission-state.json`
 2. 检查文件是否存在：
-   - 如果不存在，提示用户使用 `/missions` 启动新任务
+   - 如果不存在，提示用户使用 `/auto-missions` 启动新任务
 3. 提取和格式化以下信息：
    - 基本信息（目标、状态）
    - Milestones 进度结构
@@ -47,9 +47,9 @@ description: 查看当前 Mission 的详细执行状态与里程碑
    最后更新: [last_updated]
 
 💡 可用命令:
-   /pause    - 暂停自动执行
-   /show-plan - 查看所有已规划出的 Milestone 清单
-   /logs     - 查看主干记录的追踪日志
+   /mission-pause    - 暂停自动执行
+   /mission-show-plan - 查看所有已规划出的 Milestone 清单
+   /mission-logs     - 查看主干记录的追踪日志
 ```
 
 **状态：已暂停 或 卡住（达到最大重试上限）**
@@ -65,8 +65,8 @@ description: 查看当前 Mission 的详细执行状态与里程碑
 请检查 `mission-state.json` 或日志以确认具体错误点。
 
 💡 可用命令:
-   /resume   - 重置 retry_count 并尝试继续
-   /redirect - 调整目标的重定向指令
+   /mission-resume   - 重置 retry_count 并尝试继续
+   /mission-redirect - 调整目标的重定向指令
 ```
 
 **状态：已完成**

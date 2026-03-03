@@ -40,8 +40,8 @@ Mission: [mission_goal]
   - Milestone: [Milestone 名称]
   - Feature: [Feature 名称] (执行中/刚完成)
 
-💡 使用 /resume 命令继续执行
-   使用 /status 查看完整状态
+💡 使用 /mission-resume 命令继续执行
+   使用 /mission-status 查看完整状态
 ```
 
 **错误处理**：

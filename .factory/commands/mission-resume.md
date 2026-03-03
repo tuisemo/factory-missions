@@ -71,11 +71,11 @@ Mission: [mission_goal]
 **使用示例**：
 ```
 # 暂停
-/missions 实现一个博客系统
+/auto-missions 实现一个博客系统
 ... (执行中)
-/pause
+/mission-pause
 
 # 恢复
-/resume
+/mission-resume
 ```
 

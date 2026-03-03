@@ -1,7 +1,7 @@
 ---
 name: branch
 description: 通用任务分支代理 - 根据主干指令动态扮演各种角色以完成具体事务
-model: inherit
+model: gemini-3-pro-high
 tools: ["Read", "Write", "Edit", "Bash", "Grep", "WebSearch", "Execute", "TodoWrite"]
 ---
 

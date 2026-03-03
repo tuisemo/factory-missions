@@ -1,9 +1,9 @@
 ---
-description: 启动一个新的完全闭环管理的 Mission
+description: 启动一个新的完全闭环管理的 Auto Mission
 argument-hint: <任务描述>
 ---
 
-# 🚀 启动闭环 Mission
+# 🚀 启动闭环 Auto Mission
 
 你现在需要为用户启动一个全新的 Autonomous Mission（自主任务）工作流。
 
@@ -34,7 +34,7 @@ argument-hint: <任务描述>
 
 ```text
 ╔════════════════════════════════════════╗
-║    🚀 Mission 全自动闭环代理已启动        ║
+║    🚀 Auto Mission 全自动闭环代理已启动     ║
 ╠════════════════════════════════════════╣
 ║  Mission 目标: $ARGUMENTS               ║
 ║  状态: 规划中...                         ║
@@ -42,6 +42,6 @@ argument-hint: <任务描述>
 ╚════════════════════════════════════════╝
 
 💡 后台主干会自动为你进行任务拆分、并行执行与质量评估。期间如有异常或失败会发起自我修复支线（Repair Branch）。
-💡 如有需要可随时通过 /status 查看进度。
+💡 如有需要可随时通过 /mission-status 查看进度。
 ```
 

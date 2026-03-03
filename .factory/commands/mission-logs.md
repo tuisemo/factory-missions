@@ -63,9 +63,9 @@ description: 查看 Mission 执行日志
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 💡 可用命令:
-  /logs [数量] - 显示指定数量的日志
-  /logs [级别] - 显示指定级别的日志（INFO/WARN/ERROR）
-  /status       - 查看当前状态
+  /mission-logs [数量] - 显示指定数量的日志
+  /mission-logs [级别] - 显示指定级别的日志（INFO/WARN/ERROR）
+  /mission-status       - 查看当前状态
 ```
 
 **日志格式**：

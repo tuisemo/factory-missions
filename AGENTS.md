@@ -25,17 +25,17 @@
 
 ### 启动 Mission
 
-使用快捷命令激活 Missions 工作模式：
+使用快捷命令激活 Auto Missions 工作模式：
 
 ```
-/missions [你的任务]
+/auto-missions [你的任务]
 ```
 
 **示例**：
 ```
-/missions 写一篇 5000 字关于 Agentic AI 的技术报告
-/missions 实现一个博客系统，包含用户认证和文章管理
-/missions 调研当前主流的 AI 编程助手
+/auto-missions 写一篇 5000 字关于 Agentic AI 的技术报告
+/auto-missions 实现一个博客系统，包含用户认证和文章管理
+/auto-missions 调研当前主流的 AI 编程助手
 ```
 
 **启动后自动执行**：
@@ -59,12 +59,12 @@ Factory Droid
 │   ├── Branch      - 分支代理，执行具体任务
 │   └── Validator   - 验证代理，质量把关和验收
 ├── Commands (命令)
-│   ├── /missions   - 启动新任务
-│   ├── /status     - 查看状态
-│   ├── /logs       - 查看日志
-│   ├── /pause      - 暂停执行
-│   ├── /resume     - 恢复执行
-│   └── /show-plan  - 显示规划
+│   ├── /auto-missions - 启动自动新任务
+│   ├── /mission-status     - 查看状态
+│   ├── /mission-logs       - 查看日志
+│   ├── /mission-pause      - 暂停执行
+│   ├── /mission-resume     - 恢复执行
+│   └── /mission-show-plan  - 显示规划
 ├── Skills (技能)
 │   ├── common      - 通用技能
 │   ├── programming - 编程技能
@@ -212,19 +212,19 @@ Milestones:
 
 ## Commands 命令体系
 
-### `/missions` - 启动 Mission
+### `/auto-missions` - 启动 Auto Mission
 **参数**：`<任务描述>`
 
 启动一个全新的 Autonomous Mission 工作流。
 
 **示例**：
 ```
-/missions 实现一个博客系统
+/auto-missions 实现一个博客系统
 ```
 
 ---
 
-### `/status` - 查看状态
+### `/mission-status` - 查看状态
 显示当前 Mission 的执行进度、并行执行状态和闭环修复状态。
 
 **输出内容**：
@@ -250,7 +250,7 @@ Milestones:
 
 ---
 
-### `/logs` - 查看日志
+### `/mission-logs` - 查看日志
 **参数**：
 - 可选：日志数量（默认 20 条）
 - 可选：日志级别（INFO/WARN/ERROR）
@@ -264,14 +264,14 @@ Milestones:
 
 **示例**：
 ```
-/logs       # 查看最近 20 条日志
-/logs 50    # 查看最近 50 条日志
-/logs WARN  # 查看所有 WARN 级别日志
+/mission-logs       # 查看最近 20 条日志
+/mission-logs 50    # 查看最近 50 条日志
+/mission-logs WARN  # 查看所有 WARN 级别日志
 ```
 
 ---
 
-### `/pause` - 暂停执行
+### `/mission-pause` - 暂停执行
 暂停当前正在执行的 Mission，保存当前状态以便后续恢复。
 
 **暂停时记录**：
@@ -281,7 +281,7 @@ Milestones:
 
 ---
 
-### `/resume` - 恢复执行
+### `/mission-resume` - 恢复执行
 从暂停点恢复 Mission 执行。
 
 **恢复逻辑**：
@@ -291,7 +291,7 @@ Milestones:
 
 ---
 
-### `/show-plan` - 显示规划
+### `/mission-show-plan` - 显示规划
 显示当前 Mission 的详细规划信息。
 
 **输出内容**：
@@ -593,12 +593,12 @@ Hooks 在以下事件触发：
 
 ### 中断恢复
 
-**暂停命令**：`/pause`
+**暂停命令**：`/mission-pause`
 - 保存当前 checkpoint
 - 记录正在执行的任务
 - 支持精确恢复到中断点
 
-**恢复命令**：`/resume`
+**恢复命令**：`/mission-resume`
 - 从 Feature、验证或下一个 Milestone 继续
 - 重置执行上下文
 
@@ -614,7 +614,7 @@ checkpoint_data.feature_id 存在且已完成 → 检查 Milestone 验证
 
 ### 重定向
 
-**命令**：`/redirect [指令]`
+**命令**：`/mission-redirect [指令]`
 
 **支持类型**：
 - 功能调整（添加/删除/修改功能）
@@ -624,9 +624,9 @@ checkpoint_data.feature_id 存在且已完成 → 检查 Milestone 验证
 
 **使用示例**：
 ```
-/redirect 添加用户管理功能，包括注册和登录
-/redirect 将数据库从 MySQL 改为 PostgreSQL
-/redirect 优先实现 API 接口，前端可以延后
+/mission-redirect 添加用户管理功能，包括注册和登录
+/mission-redirect 将数据库从 MySQL 改为 PostgreSQL
+/mission-redirect 优先实现 API 接口，前端可以延后
 ```
 
 ---
@@ -699,10 +699,10 @@ echo '{"level": "ERROR", "source": "branch", "message": "测试失败", "extra_i
 
 | 问题 | 解决方案 |
 |------|----------|
-| Milestone 卡住 | 检查 logs，使用 /status 查看状态 |
+| Milestone 卡住 | 检查 mission-logs，使用 /mission-status 查看状态 |
 | 测试失败 | 查看 Validator 反馈，修复失败用例 |
 | 信息不足 | 请求用户补充信息 |
-| 达到重试上限 | 使用 /resume 重置 retry_count，或 /redirect 调整方向 |
+| 达到重试上限 | 使用 /mission-resume 重置 retry_count，或 /mission-redirect 调整方向 |
 
 ---
 
