@@ -22,7 +22,7 @@ description: 从暂停点恢复 Mission 执行
    - `last_updated`: 当前 ISO 时间戳
    - 清空 `paused_at`
 5. 将更新后的状态写回文件
-6. 调度 Orchestrator 继续执行
+6. 调度 Backbone 继续执行
 7. 输出恢复确认信息
 
 **输出格式**：
@@ -71,10 +71,11 @@ Mission: [mission_goal]
 **使用示例**：
 ```
 # 暂停
-/missions-command 实现一个博客系统
+/missions 实现一个博客系统
 ... (执行中)
-/pause-command
+/pause
 
 # 恢复
-/resume-command
+/resume
 ```
+

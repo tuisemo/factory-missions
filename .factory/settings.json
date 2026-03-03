@@ -16,7 +16,7 @@
     ],
     "SubagentStart": [
       {
-        "matcher": "orchestrator|worker|programmer|writer|researcher|validator",
+        "matcher": "backbone|branch|validator",
         "hooks": [
           {
             "type": "command",
@@ -27,7 +27,7 @@
     ],
     "SubagentStop": [
       {
-        "matcher": "validator|orchestrator|writer|researcher|programmer",
+        "matcher": "backbone|branch|validator",
         "hooks": [
           {
             "type": "command",

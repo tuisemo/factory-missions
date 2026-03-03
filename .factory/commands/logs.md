@@ -30,39 +30,35 @@ description: 查看 Mission 执行日志
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[2026-03-02T14:30:00Z] [INFO] [orchestrator] Feature f3 "编写测试" 已完成
-  - Worker: programmer
-  - 耗时: 15 分钟
+[2026-03-02T14:30:00Z] [INFO] [backbone] Feature f3 "编写测试" 已派发执行
+  - Worker: branch
   - Token 使用: 12,345
 
-[2026-03-02T14:25:00Z] [INFO] [programmer] 开始实现功能 B
-  - 依赖: f4
-  - Worker 类型: programmer
+[2026-03-02T14:25:00Z] [INFO] [branch] 开始实现功能 B
+  - Worker 类型: branch
 
 [2026-03-02T14:20:00Z] [WARN] [validator] 测试覆盖率 82%，低于目标 85%
-  - 建议: 添加边界情况测试
+  - 建议: 添加边界情况测试，要求开启 Repair
 
-[2026-03-02T14:15:00Z] [INFO] [orchestrator] 开始执行 Milestone 2
+[2026-03-02T14:15:00Z] [INFO] [backbone] 开始执行 Milestone 2
   - 并行模式: parallel
   - Features: 3 个
 
 [2026-03-02T14:10:00Z] [INFO] [validator] Milestone 1 验证通过
   - 成功标准: 全部满足
 
-[2026-03-02T14:05:00Z] [INFO] [programmer] Feature f1 "搭建项目结构" 已完成
+[2026-03-02T14:05:00Z] [INFO] [branch] Feature f1 "搭建项目结构" 认为已完成，提交验证...
   - 耗时: 8 分钟
 
-[2026-03-02T14:00:00Z] [INFO] [orchestrator] 开始执行 Milestone 1
+[2026-03-02T14:00:00Z] [INFO] [backbone] 开始执行 Milestone 1
   - 并行模式: auto
 
-[2026-03-02T13:55:00Z] [INFO] [orchestrator] 规划已批准，开始执行
+[2026-03-02T13:55:00Z] [INFO] [backbone] 规划自我反省完毕，落盘并开启执行
   - 总 Milestones: 3 个
   - 总 Features: 9 个
 
-[2026-03-02T13:50:00Z] [INFO] [user] 用户批准规划
-
-[2026-03-02T13:45:00Z] [INFO] [orchestrator] 生成初始规划
-  - 场景: programming
+[2026-03-02T13:45:00Z] [INFO] [backbone] 生成初始规划草案
+  - 请求 Validator 早期验证
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -104,3 +100,4 @@ description: 查看 Mission 执行日志
 **错误处理**：
 - 如果没有日志记录，提示用户 Mission 可能刚开始
 - 如果日志格式错误，提示用户
+

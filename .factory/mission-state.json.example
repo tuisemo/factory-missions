@@ -1,114 +1,29 @@
 {
   "mission_goal": "在此输入你的Mission目标",
-  "scene": "writing",
+  "status": "pending",
   "current_milestone": 0,
-  "status": "in-progress",
   "parallel_execution": true,
   "max_parallel_workers": 3,
   "milestones": [
     {
       "id": 0,
-      "name": "Milestone 1: 项目初始化",
+      "name": "Milestone 1: 规划出的初始阶段",
       "status": "pending",
-      "success_criteria": "完成所有初始化工作",
-      "parallel_mode": "auto",
+      "success_criteria": "Backbone 描绘成功验收该里程碑的关键条件",
       "features": [
         {
           "id": "f1",
-          "name": "搭建项目结构",
+          "name": "功能拆解名",
           "status": "pending",
-          "dependencies": [],
-          "worker_type": "programmer",
+          "requirements": "由主干自动撰写的细节要求，分发给 Branch 处理",
           "assigned_at": null,
           "completed_at": null
         },
         {
-          "id": "f2",
-          "name": "配置依赖",
+          "id": "r1",
+          "name": "修复分支 (示例)",
           "status": "pending",
-          "dependencies": ["f1"],
-          "worker_type": "programmer",
-          "assigned_at": null,
-          "completed_at": null
-        },
-        {
-          "id": "f3",
-          "name": "初始化文档",
-          "status": "pending",
-          "dependencies": [],
-          "worker_type": "writer",
-          "assigned_at": null,
-          "completed_at": null
-        }
-      ]
-    },
-    {
-      "id": 1,
-      "name": "Milestone 2: 核心功能实现",
-      "status": "pending",
-      "success_criteria": "核心功能完整实现并通过测试",
-      "parallel_mode": "parallel",
-      "features": [
-        {
-          "id": "f4",
-          "name": "实现功能A",
-          "status": "pending",
-          "dependencies": [],
-          "worker_type": "programmer",
-          "assigned_at": null,
-          "completed_at": null
-        },
-        {
-          "id": "f5",
-          "name": "实现功能B",
-          "status": "pending",
-          "dependencies": [],
-          "worker_type": "programmer",
-          "assigned_at": null,
-          "completed_at": null
-        },
-        {
-          "id": "f6",
-          "name": "编写测试",
-          "status": "pending",
-          "dependencies": ["f4", "f5"],
-          "worker_type": "programmer",
-          "assigned_at": null,
-          "completed_at": null
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Milestone 3: 优化和完善",
-      "status": "pending",
-      "success_criteria": "性能优化和文档完善",
-      "parallel_mode": "sequential",
-      "features": [
-        {
-          "id": "f7",
-          "name": "性能优化",
-          "status": "pending",
-          "dependencies": [],
-          "worker_type": "programmer",
-          "assigned_at": null,
-          "completed_at": null
-        },
-        {
-          "id": "f8",
-          "name": "文档完善",
-          "status": "pending",
-          "dependencies": ["f7"],
-          "worker_type": "writer",
-          "assigned_at": null,
-          "completed_at": null
-        },
-        {
-          "id": "f9",
-          "name": "代码重构",
-          "status": "pending",
-          "dependencies": ["f7", "f8"],
-          "worker_type": "programmer",
+          "requirements": "由 Validator 指出 FAIL 后动态追加的子任务",
           "assigned_at": null,
           "completed_at": null
         }
@@ -125,11 +40,5 @@
   },
   "paused_at": null,
   "redirect_target": null,
-  "skills_used": [],
-  "logs": [],
-  "performance_metrics": {
-    "avg_feature_duration_ms": 0,
-    "avg_milestone_duration_ms": 0,
-    "total_duration_ms": 0
-  }
+  "logs": []
 }

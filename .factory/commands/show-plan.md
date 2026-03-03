@@ -11,7 +11,6 @@ description: 显示当前 Mission 规划
 1. 读取 `$FACTORY_PROJECT_DIR/.factory/mission-state.json`
 2. 格式化输出以下信息：
    - Mission 目标
-   - 场景类型
    - 当前状态
    - 所有 Milestones（含进度）
    - 每个 Milestone 下的 Features
@@ -24,7 +23,6 @@ description: 显示当前 Mission 规划
 ║         📄 Mission 规划详情           ║
 ╠════════════════════════════════════════╣
 ║  目标: [mission_goal]                  ║
-║  场景: [scene]                         ║
 ║  状态: [status]                        ║
 ║  当前进度: [completed]/[total]         ║
 ║  并行执行: [enabled/disabled]          ║
@@ -50,3 +48,4 @@ Milestone 2: [name] [○]
   最后更新: [last_updated]
   预计开始: [estimated_start]
 ```
+
