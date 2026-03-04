@@ -2,14 +2,22 @@
   "hooks": {
     "SessionStart": [
       {
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
             "command": "bash \"$FACTORY_PROJECT_DIR/.factory/hooks/load-mission-state.sh\""
-          },
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"level\": \"INFO\", \"source\": \"mission\", \"message\": \"Mission 会话已启动\"}' | bash \"$FACTORY_PROJECT_DIR/.factory/hooks/log-mission-event.sh\""
+            "command": "bash \"$FACTORY_PROJECT_DIR/.factory/hooks/enforce-mission-completion.sh\" || true"
           }
         ]
       }
@@ -20,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"level\": \"INFO\", \"source\": \"$DROID\", \"message\": \"Subagent $DROID 已启动\"}' | bash \"$FACTORY_PROJECT_DIR/.factory/hooks/log-mission-event.sh\""
+            "command": "echo '{\"level\": \"INFO\", \"source\": \"$DROID\", \"message\": \"Subagent $DROID started\"}' | bash \"$FACTORY_PROJECT_DIR/.factory/hooks/log-mission-event-enhanced.sh\""
           }
         ]
       }
@@ -31,18 +39,14 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'bash \"$FACTORY_PROJECT_DIR/.factory/hooks/save-mission-state.sh\" && bash \"$FACTORY_PROJECT_DIR/.factory/hooks/notify-milestone.sh\"'"
-          },
-          {
-            "type": "command",
-            "command": "echo '{\"level\": \"INFO\", \"source\": \"$DROID\", \"message\": \"Subagent $DROID 已停止\"}' | bash \"$FACTORY_PROJECT_DIR/.factory/hooks/log-mission-event.sh\""
+            "command": "bash -c 'bash \"$FACTORY_PROJECT_DIR/.factory/hooks/enforce-mission-completion.sh\" && bash \"$FACTORY_PROJECT_DIR/.factory/hooks/save-mission-state-enhanced.sh\"' || true"
           }
         ]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write",
+        "matcher": "Edit|Create",
         "hooks": [
           {
             "type": "command",
@@ -50,9 +54,24 @@
           },
           {
             "type": "command",
-            "command": "echo '{\"level\": \"DEBUG\", \"source\": \"file_operation\", \"message\": \"文件已编辑/创建\", \"extra_info\": \"$TOOL_INPUT_FILE_PATH\"}' | bash \"$FACTORY_PROJECT_DIR/.factory/hooks/log-mission-event.sh\""
+            "command": "echo '{\"level\": \"DEBUG\", \"source\": \"file_operation\", \"message\": \"File edited/created\", \"extra_info\": \"'$TOOL_INPUT_FILE_PATH'\"}' | bash \"$FACTORY_PROJECT_DIR/.factory/hooks/log-mission-event-enhanced.sh\""
           }
         ]
+      },
+      {
+        "matcher": "Execute|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"level\": \"DEBUG\", \"source\": \"command_execution\", \"message\": \"Command executed\"}' | bash \"$FACTORY_PROJECT_DIR/.factory/hooks/log-mission-event-enhanced.sh\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": []
       }
     ]
   }

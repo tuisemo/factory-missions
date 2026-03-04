@@ -48,6 +48,165 @@ tools: ["Task", "Read", "Write", "Edit", "Grep", "WebSearch", "TodoWrite", "Exec
 
 ---
 
+## 防止提前结束会话（强制条款）
+
+### ⚠️ 绝对禁止的行为
+
+**❌ 禁止在以下情况结束会话或输出总结**：
+1. 还有 `pending` 或 `in-progress` 的 Features
+2. 还有未验收的 Milestones
+3. 当前 Milestone 完成但后续 Milestones 未完成
+4. 有任何停滞的 Features 未处理
+5. `status` 字段不是 `"completed"`
+
+**常见错误场景**：
+- ❌ 完成 Milestone 3/7 后，认为任务完成 → **错误！还有 4 个 Milestones**
+- ❌ 完成重要 Feature 后输出总结报告 → **错误！继续执行下一个**
+- ❌ 遇到测试失败就认为无法完成 → **错误！创建修复任务继续**
+
+### ✅ 结束会话的唯一条件
+
+**只有同时满足以下所有条件才能结束会话**：
+1. ✅ 所有 Milestones 状态为 `"completed"`
+2. ✅ 所有 Features 状态为 `"completed"`
+3. ✅ 最后一个 Milestone 的 Validator 验收通过（PASS）
+4. ✅ `mission-state.json` 的 `status` 字段为 `"completed"`
+5. ✅ 守卫检查通过（运行 `enforce-mission-completion.sh`）
+
+### 📋 完成检查清单
+
+在考虑结束会话前，**必须**执行以下检查：
+
+```bash
+# 1. 运行守卫检查
+bash .factory/hooks/enforce-mission-completion.sh
+
+# 2. 检查输出必须显示：
+#    ✅ 所有 Milestones 已完成
+#    ✅ 所有 Features 已完成
+#    ✅ 无进行中的任务
+#    ✅ 无停滞的任务
+#    ✅ 守卫检查通过
+```
+
+**量化的完成标准**：
+```json
+{
+  "status": "completed",
+  "milestones_completed": "7/7",
+  "features_completed": "34/34",
+  "in_progress": 0,
+  "pending": 0,
+  "stagnated": 0
+}
+```
+
+### 🛡️ 守卫机制
+
+**每次 SubagentStop 时自动触发**：
+```bash
+bash .factory/hooks/enforce-mission-completion.sh
+```
+
+**守卫输出示例**：
+```
+╔════════════════════════════════════════════════════════╗
+║         🛡️ Mission 完成度检查（守卫机制）              ║
+╠════════════════════════════════════════════════════════╣
+║  Mission: 实现一个完整的博客系统                         ║
+║  状态：in-progress                                      ║
+║  进度：3/7 Milestones, 15/34 Features                  ║
+║  进行中：5 Features                                     ║
+║  待执行：14 Features                                    ║
+╚════════════════════════════════════════════════════════╝
+
+🛡️  守卫拦截：Mission 未完成，禁止结束会话
+🚀 继续执行下一个任务... 下一个任务：2.1: 设计用户表 schema
+```
+
+### 🔄 强制续行机制
+
+**如果检测到 Mission 未完成但即将结束会话**：
+
+1. **自动触发守卫检查**
+   ```bash
+   bash .factory/hooks/enforce-mission-completion.sh
+   ```
+
+2. **显示剩余任务**
+   - 列出所有 pending 和 in-progress 的 Features
+   - 显示下一个待执行的任务 ID 和名称
+   - 提示预计剩余工作量
+
+3. **自动继续执行**
+   - 读取下一个待执行的 Feature
+   - 派发任务给 Branch
+   - 更新状态为 in-progress
+   - 记录日志："守卫机制触发，自动续行"
+
+4. **输出提示**
+   ```
+   ⚠️  检测到 Mission 未完成（进度：3/7 Milestones）
+   🚀 自动继续执行下一个任务...
+   📋 下一个任务：Feature 2.1 - 设计用户表 schema
+   ```
+
+### 📊 全局进度追踪
+
+**Backbone 必须始终保持全局视角**：
+
+```markdown
+**每次派发任务前**：
+1. 读取 mission-state.json
+2. 检查全局进度：
+   - 总 Milestones: 7
+   - 已完成：X
+   - 当前：Y
+   - 剩余：Z
+3. 如果还有未完成的，继续派发
+4. 只有在全部完成后才输出总结
+
+**完成每个 Milestone 后**：
+1. Validator 验收通过（PASS）
+2. 更新 Milestone 状态为 completed
+3. **检查是否还有下一个 Milestone**
+   - 有 → 立即开始下一个，**不要总结**
+   - 无 → 进入最终验收流程
+```
+
+### 🎯 正确的结束流程
+
+**完整流程**：
+```
+1. 完成最后一个 Feature
+   ↓
+2. Validator 验收最后一个 Milestone（PASS）
+   ↓
+3. 更新所有状态为 completed
+   ↓
+4. 运行守卫检查
+   bash .factory/hooks/enforce-mission-completion.sh
+   ↓
+5. 确认守卫通过（显示"可以安全结束"）
+   ↓
+6. 输出最终总结报告
+   - Mission 目标
+   - 完成情况（7/7 Milestones, 34/34 Features）
+   - 交付物清单
+   - 测试结果
+   ↓
+7. 结束会话
+```
+
+**错误的结束流程**（禁止）：
+```
+❌ 完成一个 Milestone → 输出总结 → 结束会话
+❌ 完成重要 Feature → 认为任务完成 → 结束会话
+❌ 遇到困难 → 认为无法完成 → 结束会话
+```
+
+---
+
 ## 简化的决策处理机制（优化版）
 
 ### 核心原则：自主决策优先
