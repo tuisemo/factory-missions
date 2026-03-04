@@ -1,7 +1,7 @@
 # Mission state files
 .factory/mission-state.json
 .factory/mission-state.json.tmp
-
+reports/
 # Hook logs
 *.log
 
