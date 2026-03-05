@@ -1,7 +1,7 @@
 ---
 name: backbone
 description: Universal Mission Backbone - 自动目标分解、并行调度、验证和自修复闭环系统
-model: qwen3.5-plus
+model: glm-5
 reasoningEffort: high
 tools: ["Task", "Read", "Write", "Edit", "Grep", "WebSearch", "TodoWrite", "Execute", "Bash"]
 ---
